@@ -113,7 +113,7 @@
     </style>
 </head>
 <body>
- <div class="box">
+    <div class="box">
         <div class="wrap">
             <div class="item" style="background-image: url('https://picsum.photos/1920/600?random=1');">
                 <div class="mask"></div>
@@ -145,5 +145,79 @@
             <span class="dot"></span>
         </div>
     </div>
+
+<script>
+var wrap = document.querySelector('.wrap');
+var items = document.querySelectorAll('.item');
+var dots = document.querySelectorAll('.dot');
+var prev = document.querySelector('.prev');
+var next = document.querySelector('.next');
+var index = 0;
+var len = items.length;
+
+function move(){
+    wrap.style.transform = 'translateX(-'+index*100+'%)';
+    for(var i=0;i<dots.length;i++){
+        dots[i].className = 'dot';
+    }
+    dots[index].className = 'dot active';
+}
+
+var timer = setInterval(function(){
+    index++;
+    if(index>=len){
+        index=0;
+    }
+    move();
+},3000);
+
+next.onclick = function(){
+    clearInterval(timer);
+    index++;
+    if(index>=len){
+        index=0;
+    }
+    move();
+    timer = setInterval(function(){
+        index++;
+        if(index>=len){
+            index=0;
+        }
+        move();
+    },3000);
+}
+
+prev.onclick = function(){
+    clearInterval(timer);
+    index--;
+    if(index<0){
+        index=len-1;
+    }
+    move();
+    timer = setInterval(function(){
+        index++;
+        if(index>=len){
+            index=0;
+        }
+        move();
+    },3000);
+}
+
+for(var i=0;i<dots.length;i++){
+    dots[i].index = i;
+    dots[i].onclick = function(){
+        clearInterval(timer);
+        index = this.index;
+        move();
+        timer = setInterval(function(){
+            index++;
+            if(index>=len){
+                index=0;
+            }
+            move();
+        },3000);
+    }
+}
+</script>
 </body>
 </html>
